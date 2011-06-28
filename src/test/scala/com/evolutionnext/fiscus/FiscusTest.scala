@@ -28,7 +28,24 @@ class FiscusTest extends WordSpec with ShouldMatchers {
         override val contents = (new Brown labeledAs "favorite color") :: new Green :: new Blue :: Nil
 
         override def run() {
-          get("favorite color").asInstanceOf[Brown].getClass should be (classOf[Brown])
+          get("favorite color").asInstanceOf[Brown].getClass should be(classOf[Brown])
+        }
+      }
+
+      ColorTest.run()
+    }
+
+    "return an object if that object has a no args constructor" in {
+
+      class Brown(val name:String)
+      class Green(val name:String)
+      class Blue(val name:String)
+
+      object ColorTest extends Fiscus {
+        override val contents = new Brown("Foxy") :: new Green("Al") :: new Blue("Man Group") :: Nil
+
+        override def run() {
+          get(classOf[Brown]).name should be ("Foxy")
         }
       }
 
@@ -37,19 +54,3 @@ class FiscusTest extends WordSpec with ShouldMatchers {
   }
 }
 
-//
-//    "return an object if that object has a no args constructor" in {
-//
-//      class Brown
-//      class Green
-//      class Blue
-//
-//      object ColorTest extends Fiscus {
-//        override val contents = new Brown :: new Green :: new Blue :: Nil
-//
-//        override def run() {
-//          getC(classOf[Brown])
-//        }
-//      }
-//      ColorTest.run()
-//    }
